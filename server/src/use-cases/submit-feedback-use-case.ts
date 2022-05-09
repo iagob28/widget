@@ -51,15 +51,7 @@ export class SubmitFeedbackUseCase {
       ].join(`\n`),
     };
 
-    mailgun
-      .messages()
-      .send(messageData)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    await mailgun.messages().send(messageData);
 
     // await this.mailAdapter.sendMail({
     //   subject: "Novo feedback",
