@@ -51,7 +51,7 @@ export class SubmitFeedbackUseCase {
       ].join(`\n`),
     };
 
-    await mailgun
+    mailgun
       .messages()
       .send(messageData)
       .then((res) => {
