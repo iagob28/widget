@@ -1,8 +1,5 @@
-import { MailAdapter } from "../adapters/mail-adapter";
 import { FeedbacksRepository } from "../repositories/feedbacks-repository";
-import formData from "form-data";
 import Mailgun from "mailgun-js";
-import { send } from "process";
 
 interface SubmitFeedbackUseCaseRequest {
   type: string;
@@ -16,10 +13,7 @@ const mailgun = new Mailgun({
 });
 
 export class SubmitFeedbackUseCase {
-  constructor(
-    private feedbacksRepository: FeedbacksRepository,
-    private mailAdapter: MailAdapter
-  ) {}
+  constructor(private feedbacksRepository: FeedbacksRepository) {}
 
   async execute(request: SubmitFeedbackUseCaseRequest) {
     const { type, comment, screenshot } = request;
@@ -57,7 +51,7 @@ export class SubmitFeedbackUseCase {
       ].join(`\n`),
     };
 
-    mailgun
+    await mailgun
       .messages()
       .send(messageData)
       .then((res) => {
