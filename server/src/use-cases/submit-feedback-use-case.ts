@@ -51,19 +51,10 @@ export class SubmitFeedbackUseCase {
       ].join(`\n`),
     };
 
-    await mailgun.messages().send(messageData);
-
-    // await this.mailAdapter.sendMail({
-    //   subject: "Novo feedback",
-    //   body: [
-    //     `<div style="font-family: sans-serif; font-size: 16px; color: #111; display: flex; align-items: center; flex-direction: column">`,
-    //     `<p>Tipo do feedback: <bold style="font-weight: 700">${type}</bold></p>`,
-    //     `<p>Comentário: ${comment}</p>`,
-    //     screenshot
-    //       ? `<a href="${screenshot}"><img src="${screenshot}" style="height: auto; width: 100px"/></a>`
-    //       : null,
-    //     `</div>`,
-    //   ].join(`\n`),
-    // });
+    mailgun
+      .messages()
+      .send(messageData)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   }
 }
