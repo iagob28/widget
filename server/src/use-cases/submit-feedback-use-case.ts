@@ -1,13 +1,12 @@
 import { FeedbacksRepository } from "../repositories/feedbacks-repository";
-import Mailgun from "mailgun-js";
 
 interface SubmitFeedbackUseCaseRequest {
   type: string;
   comment: string;
   screenshot?: string;
 }
-
-const mailgun = new Mailgun({
+const mailgun = require("mailgun-js");
+const mg = mailgun({
   apiKey: `${process.env.MAILGUN_API_KEY}`,
   domain: `${process.env.MAILGUN_DOMAIN_NAME}`,
 });
@@ -51,10 +50,6 @@ export class SubmitFeedbackUseCase {
       ].join(`\n`),
     };
 
-    mailgun
-      .messages()
-      .send(messageData)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    await mg.messages().send(messageData);
   }
 }
